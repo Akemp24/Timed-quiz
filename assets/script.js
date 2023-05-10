@@ -6,8 +6,8 @@ var secondsLeft = 60;
 var questionspace = document.querySelector(".question-space");
 var questionIndex = 0;
 var rightAnswer = questions[questionIndex].Correct;
-var score = 
-// var initials = querySelector(".initials");
+var score = 0;
+var initials = querySelector(".initials");
 var points = "";
 
 var questions = [
@@ -47,13 +47,15 @@ var questions = [
     },
     
 ];
-console.log(questions);
+console.log(questions.length);
 
 
 // function for the game
 function playGame() {
-setTime();
-showQuestions();
+    event.preventDefault();
+    clearScreen();
+    setTime();
+    showQuestions();
 
 }
 
@@ -71,6 +73,14 @@ function setTime() {
         }
     }, 1000);
     console.log("setTime")
+}
+
+// function for penalty
+function timePenalty() {
+    secondsLeft += amount;
+    if (secondsLeft < 0) {
+        secondsLeft = 0;
+    }
 }
 
 
@@ -111,12 +121,25 @@ function selectAnswer() {
     var rightWrong = document.querySelector(".rightWrong");
 
     if (chosenAnswer !== rightAnswer) {
-        
+        timePenalty(-5);
+        rightWrong.textContent = "Wrong Answer";
+        currentQuestionIndex++;
+        if (questionIndex >= questions.length) {
+            sendMessage();
+        } else {showQuestions(questions[questionIndex])};
     }
-
-
-
+    else if (chosenAnswer === rightAnswer) {
+        questionIndex++;
+        rightWrong.textContent = "Right Answer";
+        score++;
+        if (questionIndex >= questions.length) {
+            sendMessage();
+        } else {showQuestions(questions[questionIndex])};
+    };
 }
+
+// function to clear the screen
+
 // function for saving initials and score
 // if finish questions then variable that holds score and then set highscore as keyvalue pair 
 // highScore = {
