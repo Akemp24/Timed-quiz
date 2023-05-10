@@ -4,38 +4,45 @@ var highScore = document.getElementById("hsBtn");
 var timerE1 = document.getElementById("timer");
 var secondsLeft = 60;
 var questionspace = document.querySelector(".question-space");
-
+var questionIndex = 0;
+var rightAnswer = questions[questionIndex].Correct;
+var score = 
 // var initials = querySelector(".initials");
 var points = "";
 
 var questions = [
     {
         Question: "What does CSS Stand for?",
-        Answers: ["Cascading Style Sheet", "Commas, Squares, Syllables"],
+        Answer1: "Cascading Style Sheet",
+        Answer2:  "Commas, Squares, Syllables",
         Correct:"Cascading Style Sheet"
     },
 
     {
         Question: "What does CSS Stand for?",
-        Answers: ["Cascading Style Sheet", "Commas, Squares, Syllables"],
+        Answer1: "Cascading Style Sheet",
+        Answer2:  "Commas, Squares, Syllables",
         Correct:"Cascading Style Sheet"
     },
 
     {
         Question: "What does CSS Stand for?",
-        Answers: ["Cascading Style Sheet", "Commas, Squares, Syllables"],
+        Answer1: "Cascading Style Sheet",
+        Answer2:  "Commas, Squares, Syllables",
         Correct:"Cascading Style Sheet"
     },
 
     {
         Question: "What does CSS Stand for?",
-        Answers: ["Cascading Style Sheet", "Commas, Squares, Syllables"],
+        Answer1: "Cascading Style Sheet",
+        Answer2:  "Commas, Squares, Syllables",
         Correct:"Cascading Style Sheet"
     },
 
     {
         Question: "What does CSS Stand for?",
-        Answers: ["Cascading Style Sheet", "Commas, Squares, Syllables"],
+        Answer1: "Cascading Style Sheet",
+        Answer2:  "Commas, Squares, Syllables",
         Correct:"Cascading Style Sheet"
     },
     
@@ -66,6 +73,7 @@ function setTime() {
     console.log("setTime")
 }
 
+
 // function for game over
 function sendMessage() {
     timerE1.textContent = "Game Over";
@@ -74,17 +82,41 @@ function sendMessage() {
 // function for questions
 function showQuestions() {
     console.log("showQuestions")
-    // compare to correct answer
+
     questionspace.innerHTML = "";
 
-    var propmt = document.createElement("h3");
-    propmt.textContent = questions.Questions;
+    var questionPropmt = document.createElement("h3");
+    questionPropmt.textContent = questions.Questions;
 
     var firstAnswer = document.createElement("button");
+    firstAnswer.textContent = questions.Answer1;
+    firstAnswer.addEventListener("click", selectAnswer);
+
+    var secondAnswer = document.createElement("button");
+    secondAnswer.textContent = questions.Answer2;
+    secondAnswer.addEventListener("click", selectAnswer);
+
+    questionspace.appendChild(questionPropmt);
+    questionspace.appendChild(firstAnswer);
+    questionspace.appendChild(secondAnswer)
+}
+
+// function for selected answers and right/wrong
+function selectAnswer() {
+    event.preventDefault();
+
+    var chosenAnswer = event.target.textContent;
+
+    rightAnswer = questions[questionIndex].Correct;
+    var rightWrong = document.querySelector(".rightWrong");
+
+    if (chosenAnswer !== rightAnswer) {
+        
+    }
+
 
 
 }
-
 // function for saving initials and score
 // if finish questions then variable that holds score and then set highscore as keyvalue pair 
 // highScore = {
