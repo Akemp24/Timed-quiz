@@ -139,7 +139,10 @@ function selectAnswer() {
 }
 
 // function to clear the screen
-
+function clearScreen() {
+    questionspace.innerHTML = "";
+    document.querySelector("")
+}
 // function for saving initials and score
 // if finish questions then variable that holds score and then set highscore as keyvalue pair 
 // highScore = {
