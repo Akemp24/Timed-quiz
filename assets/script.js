@@ -142,17 +142,23 @@ function clearScreen() {
     questionspace.innerHTML = "";
     document.querySelector("#game-screen").style.display = "none";
 }
-// function for saving initials and score
+// function for high scores
 // if finish questions then variable that holds score and then set highscore as keyvalue pair 
-// highScore = {
-//     initials: initials.value,
-//     points: 1
-// };
+function highscores() {
+    var dataScore = localStorage.getItem("object");
+    var retrData = Json.parse(dataScore);
+    var name = retrData.name;
+    var score = getData.score;
+    questionSpace.innerHTML = "";
+    questionSpace.innerHTML = name + "" + score;
+};
+clickViewScores.addEventListener("click", () => {
+    highscores();
+});
 
-localStorage.setItem("highScore", JSON.stringify("highScore"));
-// click hs button
-// clear page and only show highscores
-// grab from local storage
+// Initials Input
+
+
 
 // function for startButton
 startButton.addEventListener("click", playGame);
