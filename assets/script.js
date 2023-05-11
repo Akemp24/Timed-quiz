@@ -3,8 +3,6 @@ var startButton = document.getElementById("startBtn");
 var highScore = document.getElementById("hsBtn");
 var timerE1 = document.getElementById("timer");
 var secondsLeft = 60;
-var questionspace = document.querySelector(".question-space");
-var questionIndex = 0;
 var rightAnswer = questions[questionIndex].Correct;
 var score = 0;
 var initials = querySelector(".initials");
@@ -47,7 +45,8 @@ var questions = [
     },
     
 ];
-console.log(questions.length);
+var questionspace = document.querySelector(".question-space");
+var questionIndex = 0;
 
 
 // function for the game
@@ -96,7 +95,7 @@ function showQuestions() {
     questionspace.innerHTML = "";
 
     var questionPropmt = document.createElement("h3");
-    questionPropmt.textContent = questions.Questions;
+    questionPropmt.textContent = questions[questionIndex].Questions;
 
     var firstAnswer = document.createElement("button");
     firstAnswer.textContent = questions.Answer1;
@@ -123,7 +122,7 @@ function selectAnswer() {
     if (chosenAnswer !== rightAnswer) {
         timePenalty(-5);
         rightWrong.textContent = "Wrong Answer";
-        currentQuestionIndex++;
+        questionIndex++;
         if (questionIndex >= questions.length) {
             sendMessage();
         } else {showQuestions(questions[questionIndex])};
@@ -141,7 +140,7 @@ function selectAnswer() {
 // function to clear the screen
 function clearScreen() {
     questionspace.innerHTML = "";
-    document.querySelector("")
+    document.querySelector("#game-screen").style.display = "none";
 }
 // function for saving initials and score
 // if finish questions then variable that holds score and then set highscore as keyvalue pair 
