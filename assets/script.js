@@ -5,7 +5,8 @@ var timerE1 = document.getElementById("timer");
 var secondsLeft = 60;
 var rightAnswer = questions[questionIndex].Correct;
 var score = 0;
-var initials = querySelector(".initials");
+// var initials = querySelector(".initials");
+var initials;
 var points = "";
 
 var questions = [
@@ -85,7 +86,23 @@ function timePenalty() {
 
 // function for game over
 function sendMessage() {
+    clearScreen();
     timerE1.textContent = "Game Over";
+    clearInterval(put something here ?????);
+    var endGame = document.createElement("h3");
+    questionSpace.appendChild(endGame);
+
+    var blank = document.querySelector("#show-score");
+    blank.innerHTML = "";
+
+    endGame.innerHTML = "The game is over. Your score is " + score + ". Please enter your initials to save your score!";
+
+    var initialForm = document.createElement("input");
+    blank.appendChild(initialForm);
+
+    var submitBtn = document.createElement ("button");
+    submitBtn.textContent = "Submit";
+    blank.appendChild(initialForm);
 };
 
 // function for questions
