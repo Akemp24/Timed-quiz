@@ -1,14 +1,4 @@
 // Variables that may be needed
-var startButton = document.getElementById("startBtn");
-var highScore = document.getElementById("hsBtn");
-var timerE1 = document.getElementById("timer");
-var secondsLeft = 60;
-var rightAnswer = questions[questionIndex].Correct;
-var score = 0;
-// var initials = querySelector(".initials");
-var initials;
-var points = "";
-
 var questions = [
     {
         Question: "What does CSS Stand for?",
@@ -18,36 +8,46 @@ var questions = [
     },
 
     {
-        Question: "What does CSS Stand for?",
-        Answer1: "Cascading Style Sheet",
-        Answer2:  "Commas, Squares, Syllables",
-        Correct:"Cascading Style Sheet"
+        Question: "What does HTML stand for?",
+        Answer1: "Hyper Text Makeup Language",
+        Answer2: "Hyper Text Markup Language",
+        Correct: "Hyper Text Markup Language"
     },
 
     {
-        Question: "What does CSS Stand for?",
-        Answer1: "Cascading Style Sheet",
-        Answer2:  "Commas, Squares, Syllables",
-        Correct:"Cascading Style Sheet"
+        Question: "What does JS Stand for?",
+        Answer1: "Just Saying",
+        Answer2:  "Javascript",
+        Correct:"Javascript"
     },
 
     {
-        Question: "What does CSS Stand for?",
-        Answer1: "Cascading Style Sheet",
-        Answer2:  "Commas, Squares, Syllables",
-        Correct:"Cascading Style Sheet"
+        Question: "What is a div in HTML?",
+        Answer1: "A division in a company",
+        Answer2:  "A container for HTML elements",
+        Correct: "A container for HTML elements"
     },
 
     {
-        Question: "What does CSS Stand for?",
-        Answer1: "Cascading Style Sheet",
-        Answer2:  "Commas, Squares, Syllables",
-        Correct:"Cascading Style Sheet"
+        Question: "What does a console log do?",
+        Answer1: "Logs to the console",
+        Answer2:  "sends an alert to the user",
+        Correct: "Logs to the console"
     },
     
 ];
+var startButton = document.getElementById("startBtn");
+var highScoreButton = document.getElementById("hsBtn");
+var timerE1 = document.getElementById("timer");
+var secondsLeft = 60;
+var rightAnswer = questions[0].Correct;
+var score = 0;
+var initials;
+var points = "";
 var questionspace = document.querySelector(".question-space");
 var questionIndex = 0;
+var quizTime;
+var timerInterval;
 
 
 // function for the game
@@ -76,8 +76,8 @@ function setTime() {
 }
 
 // function for penalty
-function timePenalty() {
-    secondsLeft += amount;
+function timePenalty(amount) {
+    secondsLeft -= amount;
     if (secondsLeft < 0) {
         secondsLeft = 0;
     }
@@ -86,9 +86,10 @@ function timePenalty() {
 
 // function for game over
 function sendMessage() {
+    clearInterval(timerInterval);
     clearScreen();
     timerE1.textContent = "Game Over";
-    clearInterval(put something here ?????);
+    
     var endGame = document.createElement("h3");
     questionSpace.appendChild(endGame);
 
@@ -98,11 +99,34 @@ function sendMessage() {
     endGame.innerHTML = "The game is over. Your score is " + score + ". Please enter your initials to save your score!";
 
     var initialForm = document.createElement("input");
+    initialForm.setAttribute("type", "text");
+    initialForm.setAttribute("id", "initials");
     blank.appendChild(initialForm);
 
     var submitBtn = document.createElement ("button");
     submitBtn.textContent = "Submit";
     blank.appendChild(initialForm);
+
+    submitBtn.addEventListener("click", function() {
+        var input = document.getElementById("initials").value.trim();
+        if (input.length === 0) {
+            return false;
+        }
+
+        var saveInitials = (input) => {
+            var data = JSON.stringify({"name":input[0], "score":input[1]})
+            localStorage.setItem("object", data)
+        }
+        saveInitials(initialForm.value, score);
+
+        var anotherRound = document.createElement("button");
+        anotherRound.textContent = "Would you like to try again?";
+        blank.appendChild(anotherRound);
+
+        anotherRound.addEventListener("click", () => {
+            location.reload();
+        })
+    })
 };
 
 // function for questions
@@ -112,7 +136,7 @@ function showQuestions() {
     questionspace.innerHTML = "";
 
     var questionPropmt = document.createElement("h3");
-    questionPropmt.textContent = questions[questionIndex].Questions;
+    questionPropmt.textContent = questions[questionIndex].Question;
 
     var firstAnswer = document.createElement("button");
     firstAnswer.textContent = questions.Answer1;
@@ -174,7 +198,11 @@ clickViewScores.addEventListener("click", () => {
 });
 
 // Initials Input
-
+function initialInput() {
+    submitBtn.addEventListener("click", function(event)) {
+        event.preventDefault;
+    }
+}
 
 
 // function for startButton
