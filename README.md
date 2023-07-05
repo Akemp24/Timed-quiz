@@ -6,6 +6,10 @@ A timed quiz that will penalize the user for the wrong answer. You will be able 
 
 
 ## Usage
-
+To see the website use the following link: https://akemp24.github.io/Timed-quiz/
 Visit the website and click the start button. Answer the questions correctly and you will gain points, answer incorrectly and time will be deducted. When finished you will be able to save
 your high score next to your initials. 
+
+Here is a preview of the webpage:
+
+![timed-quiz](/assets/akemp24.github.io_Timed-quiz_.png)
