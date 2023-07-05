@@ -52,8 +52,8 @@ var timerInterval;
 
 // function for the game
 function playGame() {
-    event.preventDefault();
-    clearScreen();
+    console.log("play game function is executed");
+    // clearScreen();
     setTime();
     showQuestions();
 
@@ -61,7 +61,7 @@ function playGame() {
 
 // function for the timer and time subtracted and game over
 function setTime() {
-    var timerInterval = setInterval(function () {
+    timerInterval = setInterval(function () {
         secondsLeft--;
         timerE1.textContent = secondsLeft + " seconds left till game over.";
 
@@ -91,7 +91,7 @@ function sendMessage() {
     timerE1.textContent = "Game Over";
     
     var endGame = document.createElement("h3");
-    questionSpace.appendChild(endGame);
+    questionspace.appendChild(endGame);
 
     var blank = document.querySelector("#show-score");
     blank.innerHTML = "";
@@ -105,7 +105,7 @@ function sendMessage() {
 
     var submitBtn = document.createElement ("button");
     submitBtn.textContent = "Submit";
-    blank.appendChild(initialForm);
+    blank.appendChild(submitBtn);
 
     submitBtn.addEventListener("click", function() {
         var input = document.getElementById("initials").value.trim();
@@ -113,11 +113,23 @@ function sendMessage() {
             return false;
         }
 
-        var saveInitials = (input) => {
-            var data = JSON.stringify({"name":input[0], "score":input[1]})
-            localStorage.setItem("object", data)
-        }
-        saveInitials(initialForm.value, score);
+        var saveScore = {
+            name: input,
+            score: score
+        };
+
+        var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+
+        // Add the current score to the highScores array
+        highScores.push(saveScore);
+
+        // Sort the highScores array based on the score in descending order
+        highScores.sort(function (a, b) {
+            return b.score - a.score;
+        });
+
+        // Save the highScores array back to localStorage
+        localStorage.setItem("highScores", JSON.stringify(highScores));
 
         var anotherRound = document.createElement("button");
         anotherRound.textContent = "Would you like to try again?";
@@ -125,30 +137,45 @@ function sendMessage() {
 
         anotherRound.addEventListener("click", () => {
             location.reload();
-        })
-    })
+        });
+    });
+
+
+        // var saveInitials = (input) => {
+        //     var data = JSON.stringify({"name":input[0], "score":input[1]})
+        //     localStorage.setItem("object", data)
+        // }
+        // saveInitials(initialForm.value, score);
+    
 };
 
 // function for questions
 function showQuestions() {
-    console.log("showQuestions")
+    console.log("showQuestions");
 
-    questionspace.innerHTML = "";
+    if (questionIndex >= questions.length) {
+        clearInterval(timerInterval);
+        sendMessage();
+        return;
+    }
+
+    var questionSpace = document.querySelector(".question-space");
+    questionSpace.innerHTML = "";
 
     var questionPropmt = document.createElement("h3");
     questionPropmt.textContent = questions[questionIndex].Question;
 
     var firstAnswer = document.createElement("button");
-    firstAnswer.textContent = questions.Answer1;
+    firstAnswer.textContent = questions[questionIndex].Answer1;
     firstAnswer.addEventListener("click", selectAnswer);
 
     var secondAnswer = document.createElement("button");
-    secondAnswer.textContent = questions.Answer2;
+    secondAnswer.textContent = questions[questionIndex].Answer2;
     secondAnswer.addEventListener("click", selectAnswer);
 
-    questionspace.appendChild(questionPropmt);
-    questionspace.appendChild(firstAnswer);
-    questionspace.appendChild(secondAnswer)
+    questionSpace.appendChild(questionPropmt);
+    questionSpace.appendChild(firstAnswer);
+    questionSpace.appendChild(secondAnswer)
 }
 
 // function for selected answers and right/wrong
@@ -160,50 +187,74 @@ function selectAnswer() {
     rightAnswer = questions[questionIndex].Correct;
     var rightWrong = document.querySelector(".rightWrong");
 
+    rightWrong.textContent = "";
+
     if (chosenAnswer !== rightAnswer) {
-        timePenalty(-5);
+        timePenalty(5);
         rightWrong.textContent = "Wrong Answer";
-        questionIndex++;
-        if (questionIndex >= questions.length) {
-            sendMessage();
-        } else {showQuestions(questions[questionIndex])};
-    }
-    else if (chosenAnswer === rightAnswer) {
-        questionIndex++;
+    } else {
         rightWrong.textContent = "Right Answer";
         score++;
-        if (questionIndex >= questions.length) {
-            sendMessage();
-        } else {showQuestions(questions[questionIndex])};
     };
-}
+
+    questionIndex++;
+    if (questionIndex >= questions.length) {
+        clearInterval(timerInterval);
+        clearScreen();
+        sendMessage();
+      } else {
+        showQuestions();
+      }
+};
 
 // function to clear the screen
 function clearScreen() {
-    questionspace.innerHTML = "";
-    document.querySelector("#game-screen").style.display = "none";
+    questionspace.innerHTML = " ";
+    // document.querySelector("#game-screen").style.display = "none";
 }
 // function for high scores
 // if finish questions then variable that holds score and then set highscore as keyvalue pair 
 function highscores() {
     var dataScore = localStorage.getItem("object");
-    var retrData = Json.parse(dataScore);
+    var retrData = JSON.parse(dataScore);
     var name = retrData.name;
-    var score = getData.score;
+    var score = retrData.score;
     questionSpace.innerHTML = "";
-    questionSpace.innerHTML = name + "" + score;
+    questionSpace.innerHTML = name + " " + score;
 };
-clickViewScores.addEventListener("click", () => {
-    highscores();
-});
 
-// Initials Input
-function initialInput() {
-    submitBtn.addEventListener("click", function(event)) {
-        event.preventDefault;
-    }
+function showHighScores() {
+    clearScreen();
+
+    // Get the high scores from localStorage
+  var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+
+  // Create an ordered list to display the high scores
+  var highScoresList = document.createElement("ol");
+  highScoresList.setAttribute("id", "high-scores-list");
+
+  // Iterate over the high scores and create list items for each entry
+  highScores.forEach(function (entry) {
+    var listItem = document.createElement("li");
+    listItem.textContent = entry.name + ": " + entry.score;
+    highScoresList.appendChild(listItem);
+  });
+
+  // Append the high scores list to the question space
+  questionspace.appendChild(highScoresList);
 }
+// clickViewScores.addEventListener("click", () => {
+//     highscores();
+// });
+
+// // Initials Input
+// function initialInput() {
+//     submitBtn.addEventListener("click", function(event)) {
+//         event.preventDefault;
+//     }
+// }
 
 
 // function for startButton
 startButton.addEventListener("click", playGame);
+highScoreButton.addEventListener("click", showHighScores);
