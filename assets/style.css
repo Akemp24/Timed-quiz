@@ -1,0 +1,12 @@
+html {
+    background-color: black;
+    color: white;
+}
+
+.info-block,
+.question-space,
+.rightWrong {
+    text-align: center;
+}
+
+
